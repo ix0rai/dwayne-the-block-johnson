@@ -31,12 +31,10 @@ public class DwayneStairs extends StairsBlock {
             .hardness(1.5f).requiresTool());
 
     rand = new Random();
-
   }
 
   @Override
   public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-
     // Client Code
     if (world.isClient) {
       if (Math.sqrt(Math.pow(entity.getVelocity().x, 2) + Math.pow(entity.getVelocity().y, 2) + Math.pow(entity.getVelocity().z, 2)) >= 0.25) {

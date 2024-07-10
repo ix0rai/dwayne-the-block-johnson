@@ -1,16 +1,13 @@
 package net.dwayne.the.block.johnson;
 
+import java.util.Objects;
 import java.util.Random;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -27,32 +24,30 @@ import net.minecraft.world.World;
 public class DwayneBlock extends Block {
 
   public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
-  public SoundEvent DWAYNE_SOUND_EVENT = null;
+  public SoundEvent DWAYNE_SOUND_EVENT;
   Random rand;
 
   public DwayneBlock(Settings settings, SoundEvent dwayne_sound_event) {
-    super(FabricBlockSettings.copyOf(Blocks.STONE).luminance(12).sounds(BlockSoundGroup.AMETHYST_BLOCK)
-        .hardness(1.5f).requiresTool());
+    super(settings);
 
-    this.setDefaultState((BlockState) ((BlockState) ((BlockState) this.stateManager.getDefaultState())
-        .with(Properties.HORIZONTAL_FACING, Direction.NORTH)).with(TRIGGERED, false));
+    this.setDefaultState(this.stateManager.getDefaultState()
+        .with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(TRIGGERED, false));
 
     rand = new Random();
     DWAYNE_SOUND_EVENT = dwayne_sound_event;
-
   }
 
   @Override
   public BlockState getPlacementState(ItemPlacementContext ctx) {
-    return (BlockState) this.getDefaultState().with(Properties.HORIZONTAL_FACING,
-        ctx.getHorizontalPlayerFacing().getOpposite());
+    return this.getDefaultState().with(Properties.HORIZONTAL_FACING,
+        Objects.requireNonNull(ctx.getPlayer()).getHorizontalFacing().getOpposite());
   }
 
   @Override
   public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
                             BlockHitResult hit) {
 
-    if(!player.getMainHandStack().isOf(DwayneMod.DWAYNE_ITEM)) return ActionResult.PASS;
+    if(!player.getMainHandStack().isOf(DwayneTheModJohnson.DWAYNE_ITEM)) return ActionResult.PASS;
     // Server Code
     if (!world.isClient) {
       world.playSound(null, pos, SoundEvents.BLOCK_MEDIUM_AMETHYST_BUD_PLACE, SoundCategory.BLOCKS, 1f, 1f);

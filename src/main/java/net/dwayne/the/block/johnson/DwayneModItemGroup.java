@@ -4,12 +4,12 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import static net.dwayne.the.block.johnson.DwayneMod.*;
+import static net.dwayne.the.block.johnson.DwayneTheModJohnson.*;
 
 public class DwayneModItemGroup {
   public static ItemGroup createItemGroup() {
     return FabricItemGroup.builder()
-        .icon(() -> new ItemStack(DwayneMod.DWAYNE_BLOCK))
+        .icon(() -> new ItemStack(DwayneTheModJohnson.DWAYNE_BLOCK))
         .displayName(Text.translatable("itemGroup.dwayne-the-block-johnson.itemGroup"))
         .entries((displayContext, entries) -> {
           entries.add(DWAYNE_ITEM);

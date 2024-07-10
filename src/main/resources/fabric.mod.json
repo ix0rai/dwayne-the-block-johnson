@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.dwayne.the.block.johnson.DwayneMod"
+      "net.dwayne.the.block.johnson.DwayneTheModJohnson"
     ],
     "client": [
       "net.dwayne.the.block.johnson.DwayneModClient"
