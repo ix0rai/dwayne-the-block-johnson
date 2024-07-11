@@ -10,15 +10,15 @@ public class DwayneModItemGroup {
   public static ItemGroup createItemGroup() {
     return FabricItemGroup.builder()
         .icon(() -> new ItemStack(DwayneTheModJohnson.DWAYNE_BLOCK))
-        .displayName(Text.translatable("itemGroup.dwayne-the-block-johnson.itemGroup"))
-        .entries((displayContext, entries) -> {
-          entries.add(DWAYNE_ITEM);
-          entries.add(DWAYNE_BLOCK_ITEM);
-          entries.add(DWAYNE_SLAB_ITEM);
-          entries.add(DWAYNE_WALL_ITEM);
-          entries.add(DWAYNE_STAIRS_ITEM);
-          entries.add(DWAYNE_FLOWER_ITEM);
-          entries.add(POTTED_DWAYNE_ITEM);
+        .name(Text.translatable("itemGroup.dwayne_the_block_johnson.itemGroup"))
+        .entries((displayContext, collector) -> {
+            collector.addItem(DWAYNE_ITEM);
+            collector.addItem(DwayneTheModJohnson.getItem(DWAYNE_BLOCK));
+            collector.addItem(DwayneTheModJohnson.getItem(DWAYNE_SLAB));
+            collector.addItem(DwayneTheModJohnson.getItem(DWAYNE_WALL));
+            collector.addItem(DwayneTheModJohnson.getItem(DWAYNE_STAIRS));
+            collector.addItem(DwayneTheModJohnson.getItem(DWAYNE_FLOWER));
+            collector.addItem(DwayneTheModJohnson.getItem(POTTED_DWAYNE));
         }).build();
   }
 }

@@ -15,26 +15,24 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public class DwayneBlock extends Block {
-
   public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
   public SoundEvent DWAYNE_SOUND_EVENT;
   Random rand;
 
-  public DwayneBlock(Settings settings, SoundEvent dwayne_sound_event) {
+  public DwayneBlock(Settings settings, SoundEvent dwayneTheSoundEventJohnson) {
     super(settings);
 
     this.setDefaultState(this.stateManager.getDefaultState()
         .with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(TRIGGERED, false));
 
     rand = new Random();
-    DWAYNE_SOUND_EVENT = dwayne_sound_event;
+    DWAYNE_SOUND_EVENT = dwayneTheSoundEventJohnson;
   }
 
   @Override
@@ -44,14 +42,16 @@ public class DwayneBlock extends Block {
   }
 
   @Override
-  public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
-                            BlockHitResult hit) {
+  public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hitResult) {
+    if(!player.getMainHandStack().isOf(DwayneTheModJohnson.DWAYNE_ITEM)) {
+      return ActionResult.PASS;
+    }
 
-    if(!player.getMainHandStack().isOf(DwayneTheModJohnson.DWAYNE_ITEM)) return ActionResult.PASS;
     // Server Code
     if (!world.isClient) {
       world.playSound(null, pos, SoundEvents.BLOCK_MEDIUM_AMETHYST_BUD_PLACE, SoundCategory.BLOCKS, 1f, 1f);
     }
+
     // Client Code
     if (world.isClient) {
       player.addVelocity(0, 0.35, 0);
@@ -62,6 +62,7 @@ public class DwayneBlock extends Block {
             rand.nextFloat(-0.15f, 0.15f), rand.nextFloat(-0.15f, 0.15f), rand.nextFloat(-0.15f, 0.15f));
       }
     }
+
     return ActionResult.SUCCESS;
   }
 
@@ -72,10 +73,10 @@ public class DwayneBlock extends Block {
     boolean bl2 = state.get(TRIGGERED);
     if (bl && !bl2) {
       world.scheduleBlockTick(pos, this, 4);
-      world.setBlockState(pos, (BlockState) state.with(TRIGGERED, true), Block.NO_REDRAW);
+      world.setBlockState(pos, state.with(TRIGGERED, true), Block.NO_REDRAW);
       world.playSound(null, pos, DWAYNE_SOUND_EVENT, SoundCategory.BLOCKS, 1f, 1f);
     } else if (!bl && bl2) {
-      world.setBlockState(pos, (BlockState) state.with(TRIGGERED, false), Block.NO_REDRAW);
+      world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
     }
   }
 
@@ -83,5 +84,4 @@ public class DwayneBlock extends Block {
   protected void appendProperties(StateManager.Builder<Block, BlockState> stateManager) {
     stateManager.add(Properties.HORIZONTAL_FACING, TRIGGERED);
   }
-
 }

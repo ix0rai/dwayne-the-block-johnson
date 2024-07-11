@@ -21,6 +21,9 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DwayneTheModJohnson implements ModInitializer {
   private static final String DWAYNE_THE_ID_JOHNSON = "dwayne_the_block_johnson";
   private static final Logger DWAYNE_THE_LOGGER_JOHNSON = LoggerFactory.getLogger(DWAYNE_THE_ID_JOHNSON);
@@ -30,12 +33,12 @@ public class DwayneTheModJohnson implements ModInitializer {
           .luminance(b -> 12)
           .sounds(BlockSoundGroup.AMETHYST_BLOCK)
           .hardness(1.5f).toolRequired();
+  private static final Map<Block, Item> DWAYNE_THE_MAP_JOHNSON = new HashMap<>();
 
-  public static SoundEvent DWAYNE_SOUND_EVENT = SoundEvent.createVariableRangeEvent(Identifier.of(DWAYNE_THE_ID_JOHNSON, "dwayne"));
   public static final Block DWAYNE_BLOCK = new DwayneBlock(DWAYNE_THE_BLOCK_SETTINGS_JOHNSON, DWAYNE_THE_SOUND_EVENT_JOHNSON);
   public static final Block DWAYNE_SLAB = new SlabBlock(DWAYNE_THE_BLOCK_SETTINGS_JOHNSON);
   public static final Block DWAYNE_WALL = new WallBlock(DWAYNE_THE_BLOCK_SETTINGS_JOHNSON);
-  public static final Block DWAYNE_STAIRS = new DwayneStairs(DwayneTheModJohnson.DWAYNE_BLOCK.getDefaultState(), null, DWAYNE_THE_SOUND_EVENT_JOHNSON);
+  public static final Block DWAYNE_STAIRS = new DwayneStairs(DwayneTheModJohnson.DWAYNE_BLOCK.getDefaultState(), DWAYNE_THE_BLOCK_SETTINGS_JOHNSON);
   public static final Block DWAYNE_FLOWER = new FlowerBlock(StatusEffects.SLOWNESS, 8, AbstractBlock.Settings.copy(Blocks.POPPY).strength(0.0F).nonOpaque());
   public static final Block POTTED_DWAYNE = new FlowerPotBlock(DWAYNE_FLOWER, AbstractBlock.Settings.copy(Blocks.FLOWER_POT).strength(0.0F).nonOpaque());
 
@@ -64,13 +67,19 @@ public class DwayneTheModJohnson implements ModInitializer {
     DWAYNE_THE_LOGGER_JOHNSON.info("Dwayne 'The Log' Johnson");
   }
 
-  public static void dwayneTheRegisterBlockJohnson(String dwayneThePathJohnson, Block dwayneTheBlockJohnson) {
-    dwayneTheRegisterJohnson(Registries.BLOCK, dwayneThePathJohnson, dwayneTheBlockJohnson);
-    dwayneTheRegisterJohnson(Registries.ITEM, dwayneThePathJohnson, new BlockItem(dwayneTheBlockJohnson, new Item.Settings()));
+  public static Item getItem(Block block) {
+    return DWAYNE_THE_MAP_JOHNSON.get(block);
   }
 
-  public static <T> void dwayneTheRegisterJohnson(Registry<T> dwayneTheRegistryJohnson, String dwayneThePathJohnson, T dwayneTheObjectJohnson) {
-    Registry.register(dwayneTheRegistryJohnson, dwayneTheIdentifierJohnson(dwayneThePathJohnson), dwayneTheObjectJohnson);
+  public static void dwayneTheRegisterBlockJohnson(String dwayneThePathJohnson, Block dwayneTheBlockJohnson) {
+    var block = dwayneTheRegisterJohnson(Registries.BLOCK, dwayneThePathJohnson, dwayneTheBlockJohnson);
+    var item = dwayneTheRegisterJohnson(Registries.ITEM, dwayneThePathJohnson, new BlockItem(dwayneTheBlockJohnson, new Item.Settings()));
+
+    DWAYNE_THE_MAP_JOHNSON.put(block, item);
+  }
+
+  public static <T> T dwayneTheRegisterJohnson(Registry<T> dwayneTheRegistryJohnson, String dwayneThePathJohnson, T dwayneTheObjectJohnson) {
+    return Registry.register(dwayneTheRegistryJohnson, dwayneTheIdentifierJohnson(dwayneThePathJohnson), dwayneTheObjectJohnson);
   }
 
   public static Identifier dwayneTheIdentifierJohnson(String dwayneThePathJohnson) {

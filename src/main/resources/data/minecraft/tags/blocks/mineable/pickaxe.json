@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "dwayne-the-block-johnson:dwayne_block",
-    "dwayne-the-block-johnson:dwayne_slab",
-    "dwayne-the-block-johnson:dwayne_wall",
-    "dwayne-the-block-johnson:dwayne_stairs"
+    "dwayne_the_block_johnson:dwayne_block",
+    "dwayne_the_block_johnson:dwayne_slab",
+    "dwayne_the_block_johnson:dwayne_wall",
+    "dwayne_the_block_johnson:dwayne_stairs"
   ]
 }
