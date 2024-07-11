@@ -81,7 +81,7 @@
         "west": "tall"
       },
       "apply": {
-        "model": "dwayne-the-block-johnson:block/dwayne_wall_side_tall",
+        "model": "dwayne_the_block_johnson:block/dwayne_wall_side_tall",
         "y": 270,
         "uvlock": true
       }
