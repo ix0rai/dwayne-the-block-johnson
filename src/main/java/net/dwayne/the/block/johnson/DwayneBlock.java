@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -18,7 +19,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
+import net.minecraft.world.tick.TickSchedulerAccess;
 
 public class DwayneBlock extends Block {
   public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
@@ -66,18 +70,23 @@ public class DwayneBlock extends Block {
     return ActionResult.SUCCESS;
   }
 
+  protected void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, RandomGenerator random) {
+    world.playSound(null, pos, DWAYNE_SOUND_EVENT, SoundCategory.BLOCKS, 1f, 1f);
+    super.scheduledTick(state, world, pos, random);
+  }
+
   @Override
-  public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos,
-                             boolean notify) {
-    boolean bl = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
-    boolean bl2 = state.get(TRIGGERED);
-    if (bl && !bl2) {
-      world.scheduleBlockTick(pos, this, 4);
-      world.setBlockState(pos, state.with(TRIGGERED, true), Block.NO_REDRAW);
-      world.playSound(null, pos, DWAYNE_SOUND_EVENT, SoundCategory.BLOCKS, 1f, 1f);
-    } else if (!bl && bl2) {
-      world.setBlockState(pos, state.with(TRIGGERED, false), Block.NO_REDRAW);
+  protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, TickSchedulerAccess tickSchedulerAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomGenerator random) {
+    boolean dwayneBoolean = world.isReceivingRedstonePower(pos) || world.isReceivingRedstonePower(pos.up());
+    boolean otherDwayneBoolean = Boolean.TRUE.equals(state.get(TRIGGERED));
+    if (dwayneBoolean && !otherDwayneBoolean) {
+      tickSchedulerAccess.scheduleBlockTick(pos, this, 4);
+      return state.with(TRIGGERED, true);
+    } else if (!dwayneBoolean && otherDwayneBoolean) {
+      return state.with(TRIGGERED, false);
     }
+
+    return state;
   }
 
   @Override
